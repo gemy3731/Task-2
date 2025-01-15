@@ -16,15 +16,29 @@ import { Button } from "./ui/button"
 
 import { FaCcVisa } from "react-icons/fa";
 import { RiVisaLine } from "react-icons/ri";
+import { useEffect, useState } from "react";
+import { cardI } from "../interfaces/cardI";
 
 export default function MyCard() {
+  const [data, setData] = useState<cardI>()
+  useEffect(() => {
+    getCardData();
+  }, [])
+  
+  const getCardData = async ()=>{
+    const response = await fetch('https://www.bakarcompany.somee.com/api/IssueCard/get-card-data');
+    const cardData:cardI = await response.json();
+    setData(cardData);
+    console.log(data);
+  }
+
   return (
     <div className="w-[40%] mx-auto mt-[200px]">
       <Accordion type="single" collapsible>
         <AccordionItem value="item-1">
           <AccordionTrigger className="border border-3">
             <span className="flex justify-start items-center gap-4 text-[20px]">
-              <FaCcVisa className="text-[30px]" /> Jenny Rosen
+              <FaCcVisa className="text-[30px]" /> {data?.cardholderName}
             </span>
           </AccordionTrigger>
           <AccordionContent>
@@ -33,15 +47,15 @@ export default function MyCard() {
                 <CardTitle className="border border-black p-8">
                   <div className="flex flex-col gap-20">
                     <RiVisaLine  className="text-[5rem] self-end"/>
-                    <p className="text-[1.8rem] tracking-[0.5rem]">**** **** **** 0153</p>
+                    <p className="text-[1.8rem] tracking-[0.5rem]">**** **** **** {data?.last4}</p>
                     <div className="flex justify-between">
                       <div className="flex flex-col gap-3">
                         <h4 className="font-light">Cardholder</h4>
-                        <h4 className="text-[14px]">Mohamed</h4>
+                        <h4 className="text-[14px]">{data?.cardholderName}</h4>
                         </div>
                       <div className="flex flex-col gap-3">
                       <h4 className="font-light">Expiry date</h4>
-                      <h4 className="text-[14px]">16/4</h4>
+                      <h4 className="text-[14px]">{data?.expiryMonth}/{data?.expiryYear.toString().substring(2)}</h4>
                       </div>
                       <div className="flex flex-col gap-3">
                       <h4 className="font-light">CVC</h4>
@@ -53,10 +67,10 @@ export default function MyCard() {
               </CardHeader>
               <CardContent>
                 <table className="w-full cardBody">
-                  <body className="px-8">
+                  <tbody className="px-8">
                     <tr>
                       <td >Card number</td>
-                      <td >**** **** **** 0153</td>
+                      <td >**** **** **** {data?.last4}</td>
                     </tr>
                     <tr>
                       <td>CVV</td>
@@ -64,11 +78,11 @@ export default function MyCard() {
                     </tr>
                     <tr>
                       <td>Expiration</td>
-                      <td>10/2025</td>
+                      <td>{data?.expiryMonth}/{data?.expiryYear}</td>
                     </tr>
                     <tr>
                       <td>Brand</td>
-                      <td className="flex gap-1">Visa<FaCcVisa className="text-[20px]" /></td>
+                      <td className="flex gap-1">{data?.brand}<FaCcVisa className="text-[20px]" /></td>
                     </tr>
                     <tr>
                       <td>Status</td>
@@ -76,7 +90,7 @@ export default function MyCard() {
                     </tr>
                     <tr>
                       <td>Cardholder</td>
-                      <td>Mohamed</td>
+                      <td>{data?.cardholderName}</td>
                     </tr>
                     <tr>
                       <td>Card type</td>
@@ -84,20 +98,20 @@ export default function MyCard() {
                     </tr>
                     <tr>
                       <td>Created at</td>
-                      <td>Nov,15.2023</td>
+                      <td>Nov 15, 2023, 9:32 PM</td>
                     </tr>
                     <tr>
                       <td>Billing address</td>
-                      <td>123 main street<br/>San Francisco</td>
+                      <td>123 main street<br/>San Francisco, CA, 94111, US</td>
                     </tr>
-                  </body>
+                  </tbody>
                 </table>
               </CardContent>
               <CardFooter>
                 <div className="flex flex-col gap-4 mx-auto">
-                <Button className="" size='lg' variant="outline">Freeze card</Button>
-                <Button variant="outline">Replace card</Button>
-                <Button variant="outline">Cancel card</Button>
+                <Button size='lg' variant="outline">Freeze card</Button>
+                <Button size='lg' variant="outline">Replace card</Button>
+                <Button size='lg' variant="outline">Cancel card</Button>
                 </div>
               </CardFooter>
             </Card>

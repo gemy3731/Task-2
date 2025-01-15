@@ -17,3 +17,8 @@
 .cardBody tr>td:first-child{
   font-weight: 600;
 }
+.transactionsTable th{
+  padding: 5px;
+  width: 20%;
+  color: grey;
+}

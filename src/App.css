@@ -6,3 +6,14 @@
 .active{
   border-bottom: 2px solid black;
 }
+.cardBody tr{
+  display: flex;
+  width: 100%;
+  margin-block: 10px;
+}
+.cardBody td{
+  width: 40%;
+}
+.cardBody tr>td:first-child{
+  font-weight: 600;
+}
